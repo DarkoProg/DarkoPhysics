@@ -8,3 +8,7 @@ set(SOURCES src/main.cpp)
 
 add_executable(PhysicsEngine ${SOURCES})
 target_include_directories(PhysicsEngine PRIVATE ${PROJECT_SOURCE_DIR}/include)
+
+
+#compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
