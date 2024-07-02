@@ -9,6 +9,6 @@ class Circle : public Object {
   float radius;
 
  public:
-  Circle(glm::vec2 Tposition, float Tradius);
+  Circle(glm::vec2 Tposition, float Tinverse_mass, float Tradius);
   float getRadius();
 };

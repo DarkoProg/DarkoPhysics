@@ -28,9 +28,9 @@ bool circleIntersect(Circle &a, Circle &b) {
 }
 
 int main() {
-  Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f);
-  Circle circle2 = Circle(glm::vec2{10, 0}, 1.0f);
-  Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f);
+  Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
+  Circle circle2 = Circle(glm::vec2{10, 0}, 1.0f / 10.0f, 1.0f);
+  Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
   std::cout << circleIntersect(circle1, circle2);
   for (;;) {
     std::cout << "x: " << circle1.getPosition().x << std::endl;
