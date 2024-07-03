@@ -5,14 +5,20 @@
 
 Object::Object(glm::vec2 Tposition, float Tinverse_mass)
     : position(Tposition), inverse_mass(Tinverse_mass) {
-  velocity = 0;
+  velocity = glm::vec2{0, 0};
 }
 
-void Object::setIinverse_mass(float Tinverse_mass) {
+// #getters
+glm::vec2 Object::getPosition() { return position; }
+float Object::getInverseMass() { return inverse_mass; }
+glm::vec2 Object::getVelocity() { return velocity; }
+
+// setters
+void Object::setInverseMass(float Tinverse_mass) {
   inverse_mass = Tinverse_mass;
 }
-glm::vec2 Object::getPosition() { return position; }
-void Object::Move(glm::vec2 move) {
-  position.x += move.x;
-  position.y += move.y;
-}
+void Object::setVelocity(glm::vec2 Tvelocity) { velocity = Tvelocity; }
+void Object::setPosition(glm::vec2 Tposition) { position = Tposition; }
+
+// other methods
+void Object::Move() { position += velocity; }
