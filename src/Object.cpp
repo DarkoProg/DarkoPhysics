@@ -1,11 +1,13 @@
 #include "Object.h"
 
-#include <glm/detail/qualifier.hpp>
-#include <glm/ext/vector_float2.hpp>
+#include <cmath>
+#include <glm/fwd.hpp>
+#include <iostream>
 
 Object::Object(glm::vec2 Tposition, float Tinverse_mass)
     : position(Tposition), inverse_mass(Tinverse_mass) {
   velocity = glm::vec2{0, 0};
+  orientation = glm::mat2{};
 }
 
 // #getters
@@ -19,6 +21,11 @@ void Object::setInverseMass(float Tinverse_mass) {
 }
 void Object::setVelocity(glm::vec2 Tvelocity) { velocity = Tvelocity; }
 void Object::setPosition(glm::vec2 Tposition) { position = Tposition; }
+
+// virtual methods
+void Object::print() {
+  std::cout << "x: " << position.x << " y: " << position.y << std::endl;
+}
 
 // other methods
 void Object::Move() { position += velocity; }

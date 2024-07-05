@@ -1,5 +1,6 @@
-#include <glm/ext/vector_float2.hpp>
+#include <cmath>
 #include <glm/glm.hpp>
+#include <glm/mat2x2.hpp>
 #include <glm/vec2.hpp>
 
 #pragma once
@@ -9,6 +10,7 @@ class Object {
   glm::vec2 position;
   float inverse_mass;
   glm::vec2 velocity;
+  glm::mat2 orientation;
 
  public:
   Object(glm::vec2 Tposition, float Tinverse_mass);
@@ -22,6 +24,9 @@ class Object {
   void setInverseMass(float Tinverse_mass);
   void setVelocity(glm::vec2 Tvelocity);
   void setPosition(glm::vec2 Tposition);
+
+  // virtual methods
+  void print();
 
   // other methods
   void Move();

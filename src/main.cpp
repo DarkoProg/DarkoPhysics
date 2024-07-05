@@ -49,13 +49,15 @@ void repositionObjectsOnCollision(Circle &obj1, Circle &obj2) {
 
 int main() {
   Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
-  Circle circle2 = Circle(glm::vec2{5, 0}, 1.0f / 10.0f, 1.0f);
+  Circle circle2 = Circle(glm::vec2{5, 0.5f}, 1.0f / 10.0f, 1.0f);
   Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
   circle1.setVelocity(glm::vec2{0.1, 0});
   // circle2.setVelocity(glm::vec2{-0.1, 0});
   for (;;) {
-    std::cout << "Ax: " << circle1.getPosition().x
-              << "   Bx: " << circle2.getPosition().x << std::endl;
+    std::cout << "circle1: ";
+    circle1.print();
+    std::cout << "circle2: ";
+    circle2.print();
     if (circleIntersect(circle1, circle2)) {
       glm::vec2 colision_normal = circle1.getPosition() - circle2.getPosition();
       float distance = (colision_normal * colision_normal).length();
