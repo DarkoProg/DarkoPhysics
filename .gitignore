@@ -2,3 +2,6 @@ build/
 compile_flags.txt
 .clang-format
 .c*
+src/glad.c
+include/glad/
+include/KHR/
