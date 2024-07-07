@@ -6,12 +6,16 @@
 #include <glm/geometric.hpp>
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
+#include <vector>
 
 #include "Box.h"
 #include "Circle.h"
 #include "Object.h"
+#include "ShaderProgram.h"
+#include "VAO.h"
+#include "VBO.h"
 #define GLFW_INCLUDE_NONE
-#include "graphic.h"
+#include "Graphic.h"
 
 // #include <iostream>
 // #include <ostream>
@@ -65,12 +69,19 @@ int main() {
   if (!opengl.initWindow()) {
     return -1;
   }
-  Box box1 = Box(glm::vec2{0, 0}, 1.0f / 10.0f, glm::vec2{1.0f, 1.0f},
-                 glm::vec2{1.0f});
-  Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
-  Circle circle2 = Circle(glm::vec2{5, 0.5f}, 1.0f / 10.0f, 1.0f);
-  Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
-  circle1.setVelocity(glm::vec2{0.1, 0});
+
+  std::vector<GLfloat> vert;
+  VAO VAO1;
+  VAO1.Bind();
+  VBO VBO1(vert, vert.size() * sizeof(GLfloat));
+  Shader ShaderProgram("shaders/default.vert", "shaders/default.frag");
+
+  // Box box1 = Box(glm::vec2{0, 0}, 1.0f / 10.0f, glm::vec2{1.0f, 1.0f},
+  //                glm::vec2{1.0f});
+  // Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
+  // Circle circle2 = Circle(glm::vec2{5, 0.5f}, 1.0f / 10.0f, 1.0f);
+  // Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
+  // circle1.setVelocity(glm::vec2{0.1, 0});
   // circle2.setVelocity(glm::vec2{-0.1, 0});
   while (!glfwWindowShouldClose(opengl.getWindow())) {
     opengl.processInput();
