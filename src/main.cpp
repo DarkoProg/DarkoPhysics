@@ -1,3 +1,4 @@
+
 #include <unistd.h>
 
 #include <cmath>
@@ -5,12 +6,15 @@
 #include <glm/geometric.hpp>
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
-#include <iostream>
-#include <ostream>
 
 #include "Box.h"
 #include "Circle.h"
 #include "Object.h"
+#define GLFW_INCLUDE_NONE
+#include "graphic.h"
+
+// #include <iostream>
+// #include <ostream>
 
 bool boxIntersect(Box &a, Box &b) {
   if (a.getMax().x < b.getMin().x or a.getMin().x > b.getMax().x) return false;
@@ -57,6 +61,10 @@ glm::vec2 collisionNormal(Object object1, Object object2) {
 // }
 
 int main() {
+  Graphic opengl(800, 800);
+  if (!opengl.initWindow()) {
+    return -1;
+  }
   Box box1 = Box(glm::vec2{0, 0}, 1.0f / 10.0f, glm::vec2{1.0f, 1.0f},
                  glm::vec2{1.0f});
   Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
@@ -64,23 +72,31 @@ int main() {
   Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
   circle1.setVelocity(glm::vec2{0.1, 0});
   // circle2.setVelocity(glm::vec2{-0.1, 0});
-  for (;;) {
-    std::cout << "circle1: ";
-    circle1.print();
-    std::cout << "circle2: ";
-    circle2.print();
-    if (circleIntersect(circle1, circle2)) {
-      glm::vec2 colision_normal = collisionNormal(circle1, circle2);
-      float distance = (colision_normal * colision_normal).length();
-      repositionObjectsOnCollision(circle1, circle2);
-      colisionResolution(circle1, circle2, colision_normal / distance);
-      std::cout << "COLISION!!!!\n";
-      // std::cout << "Ax: " << circle1.getPosition().x
-      //           << "   Bx: " << circle2.getPosition().x << std::endl;
-      // break;
-    }
-    circle1.Move();
-    circle2.Move();
-    usleep(50000);
+  while (!glfwWindowShouldClose(opengl.getWindow())) {
+    opengl.processInput();
+
+    glClearColor(0.4f, 0.4f, 0.6f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers(opengl.getWindow());
+    glfwPollEvents();
+    // std::cout << "circle1: ";
+    // circle1.print();
+    // std::cout << "circle2: ";
+    // circle2.print();
+    // if (circleIntersect(circle1, circle2)) {
+    //   glm::vec2 colision_normal = collisionNormal(circle1, circle2);
+    //   float distance = (colision_normal * colision_normal).length();
+    //   repositionObjectsOnCollision(circle1, circle2);
+    //   colisionResolution(circle1, circle2, colision_normal / distance);
+    //   std::cout << "COLISION!!!!\n";
+    //   // std::cout << "Ax: " << circle1.getPosition().x
+    //   //           << "   Bx: " << circle2.getPosition().x << std::endl;
+    //   // break;
+    // }
+    // circle1.Move();
+    // circle2.Move();
+    // usleep(50000);
   }
+  opengl.cleanup();
+  return 0;
 }
