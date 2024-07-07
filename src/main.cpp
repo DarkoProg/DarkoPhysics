@@ -8,17 +8,13 @@
 #include <iostream>
 #include <ostream>
 
+#include "Box.h"
 #include "Circle.h"
 #include "Object.h"
 
-struct Box {
-  glm::vec2 min;
-  glm::vec2 max;
-};
-
 bool boxIntersect(Box &a, Box &b) {
-  if (a.max.x < b.min.x or a.min.x > b.max.x) return false;
-  if (a.max.y < b.min.y or a.min.y > b.max.y) return false;
+  if (a.getMax().x < b.getMin().x or a.getMin().x > b.getMax().x) return false;
+  if (a.getMax().y < b.getMin().y or a.getMin().y > b.getMax().y) return false;
   return true;
 }
 
@@ -47,7 +43,22 @@ void repositionObjectsOnCollision(Circle &obj1, Circle &obj2) {
   obj1.setPosition(obj2.getPosition() - obj2.getRadius() - obj1.getRadius());
 }
 
+glm::vec2 collisionNormal(Object object1, Object object2) {
+  return object1.getPosition() - object2.getPosition();
+}
+
+// glm::vec2 collisionNormal(Circle circle1, Circle circle2) {
+//   return circle1.getPosition() - circle2.getPosition();
+// }
+
+// glm::vec2 collisionNormal(Box box1, Box box2) {
+//   glm::vec2 n = box1.getPosition() - box2.getPosition();
+//   return n;
+// }
+
 int main() {
+  Box box1 = Box(glm::vec2{0, 0}, 1.0f / 10.0f, glm::vec2{1.0f, 1.0f},
+                 glm::vec2{1.0f});
   Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
   Circle circle2 = Circle(glm::vec2{5, 0.5f}, 1.0f / 10.0f, 1.0f);
   Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
@@ -59,7 +70,7 @@ int main() {
     std::cout << "circle2: ";
     circle2.print();
     if (circleIntersect(circle1, circle2)) {
-      glm::vec2 colision_normal = circle1.getPosition() - circle2.getPosition();
+      glm::vec2 colision_normal = collisionNormal(circle1, circle2);
       float distance = (colision_normal * colision_normal).length();
       repositionObjectsOnCollision(circle1, circle2);
       colisionResolution(circle1, circle2, colision_normal / distance);

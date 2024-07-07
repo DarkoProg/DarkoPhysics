@@ -7,7 +7,7 @@
 Object::Object(glm::vec2 Tposition, float Tinverse_mass)
     : position(Tposition), inverse_mass(Tinverse_mass) {
   velocity = glm::vec2{0, 0};
-  orientation = glm::mat2{};
+  orientation = glm::mat4{1.0};
 }
 
 // #getters
