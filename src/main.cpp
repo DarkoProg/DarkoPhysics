@@ -3,9 +3,11 @@
 
 #include <cmath>
 #include <glm/ext/vector_float2.hpp>
+#include <glm/fwd.hpp>
 #include <glm/geometric.hpp>
 #include <glm/glm.hpp>
-#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <ostream>
 #include <vector>
 
 #include "Box.h"
@@ -15,10 +17,12 @@
 #include "VAO.h"
 #include "VBO.h"
 #define GLFW_INCLUDE_NONE
-#include "Graphic.h"
+#include <iostream>
 
-// #include <iostream>
+#include "Graphic.h"
 // #include <ostream>
+std::vector<Object *> objects;
+std::vector<GLfloat> vert;
 
 bool boxIntersect(Box &a, Box &b) {
   if (a.getMax().x < b.getMin().x or a.getMin().x > b.getMax().x) return false;
@@ -34,8 +38,8 @@ bool circleIntersect(Circle &a, Circle &b) {
   return false;
 }
 
-void colisionResolution(Object &obj1, Object &obj2, glm::vec2 colision_normal) {
-  glm::vec2 relative_velocity = obj1.getVelocity() - obj2.getVelocity();
+void colisionResolution(Object &obj1, Object &obj2, glm::vec3 colision_normal) {
+  glm::vec3 relative_velocity = obj1.getVelocity() - obj2.getVelocity();
   float total_velocity =
       -(1 + M_E) * glm::dot(relative_velocity, colision_normal);
   float impulse =
@@ -51,51 +55,67 @@ void repositionObjectsOnCollision(Circle &obj1, Circle &obj2) {
   obj1.setPosition(obj2.getPosition() - obj2.getRadius() - obj1.getRadius());
 }
 
-glm::vec2 collisionNormal(Object object1, Object object2) {
+glm::vec3 collisionNormal(Object object1, Object object2) {
   return object1.getPosition() - object2.getPosition();
 }
 
-// glm::vec2 collisionNormal(Circle circle1, Circle circle2) {
+// glm::vec3 collisionNormal(Circle circle1, Circle circle2) {
 //   return circle1.getPosition() - circle2.getPosition();
 // }
 
-// glm::vec2 collisionNormal(Box box1, Box box2) {
-//   glm::vec2 n = box1.getPosition() - box2.getPosition();
+// glm::vec3 collisionNormal(Box box1, Box box2) {
+//   glm::vec3 n = box1.getPosition() - box2.getPosition();
 //   return n;
 // }
 
 int main() {
+  objects.push_back(new Box(glm::vec3(0.5f, 0.5f, 0), 1.0f / 10.0f,
+                            glm::vec3(0.5f, 0.5f, 0),
+                            glm::vec3(0.5f, 0.5f, 0)));
+
+  for (int i = 0; i < objects.size(); i++) {
+    std::vector<GLfloat> temp_verticies = objects[i]->generateVertecies();
+    for (int i = 0; i < temp_verticies.size(); i++) {
+      std::cout << temp_verticies[i] << std::endl;
+    }
+    vert.insert(vert.end(), temp_verticies.begin(), temp_verticies.end());
+  }
   Graphic opengl(800, 800);
   if (!opengl.initWindow()) {
     return -1;
   }
 
-  std::vector<GLfloat> vert;
   VAO VAO1;
   VAO1.Bind();
   VBO VBO1(vert, vert.size() * sizeof(GLfloat));
-  Shader ShaderProgram("shaders/default.vert", "shaders/default.frag");
+  VAO1.LinkAttribute(VBO1, 0, 3, GL_FLOAT, 3 * sizeof(GL_FLOAT), (void *)0);
+  // Your function
+  Shader ShaderProgram("../shaders/default.vert", "../shaders/default.frag");
 
-  // Box box1 = Box(glm::vec2{0, 0}, 1.0f / 10.0f, glm::vec2{1.0f, 1.0f},
-  //                glm::vec2{1.0f});
-  // Circle circle1 = Circle(glm::vec2{0, 0}, 1.0f / 10.0f, 1.0f);
-  // Circle circle2 = Circle(glm::vec2{5, 0.5f}, 1.0f / 10.0f, 1.0f);
-  // Circle circle3 = Circle(glm::vec2{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
-  // circle1.setVelocity(glm::vec2{0.1, 0});
-  // circle2.setVelocity(glm::vec2{-0.1, 0});
+  // Box box1 = Box(glm::vec3{0, 0}, 1.0f / 10.0f, glm::vec3{1.0f, 1.0f},
+  //                glm::vec3{1.0f});
+  // Circle circle1 = Circle(glm::vec3{0, 0}, 1.0f / 10.0f, 1.0f);
+  // Circle circle2 = Circle(glm::vec3{5, 0.5f}, 1.0f / 10.0f, 1.0f);
+  // Circle circle3 = Circle(glm::vec3{0.5, 0.5}, 1.0f / 10.0f, 1.0f);
+  // circle1.setVelocity(glm::vec3{0.1, 0});
+  // circle2.setVelocity(glm::vec3{-0.1, 0});
   while (!glfwWindowShouldClose(opengl.getWindow())) {
     opengl.processInput();
 
     glClearColor(0.4f, 0.4f, 0.6f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    ShaderProgram.Activate();
+    VAO1.Bind();
+    glDrawArrays(GL_TRIANGLES, 0, vert.size() / 3);
     glfwSwapBuffers(opengl.getWindow());
     glfwPollEvents();
+
     // std::cout << "circle1: ";
     // circle1.print();
     // std::cout << "circle2: ";
     // circle2.print();
     // if (circleIntersect(circle1, circle2)) {
-    //   glm::vec2 colision_normal = collisionNormal(circle1, circle2);
+    //   glm::vec3 colision_normal = collisionNormal(circle1, circle2);
     //   float distance = (colision_normal * colision_normal).length();
     //   repositionObjectsOnCollision(circle1, circle2);
     //   colisionResolution(circle1, circle2, colision_normal / distance);

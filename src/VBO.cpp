@@ -1,4 +1,4 @@
-#include "../include/VBO.h"
+#include "VBO.h"
 
 #include <vector>
 

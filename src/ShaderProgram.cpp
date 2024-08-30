@@ -66,6 +66,35 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
   /* glDeleteShader(tessalationControlShader); */
 }
 
+// Shader::Shader(const char* vertexFile, const char* fragmentFile) {
+// std::string vertexCode = get_file_contents(vertexFile);
+// std::string fragmentCode = get_file_contents(fragmentFile);
+//
+// const char* vertexSource = vertexCode.c_str();
+// const char* fragmentSource = fragmentCode.c_str();
+//
+// GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+// glShaderSource(vertexShader, 1, &vertexSource, NULL);
+// glCompileShader(vertexShader);
+// compileErrors(vertexShader, "VERTEX");
+//
+// GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+// glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+// glCompileShader(fragmentShader);
+// compileErrors(fragmentShader, "FRAGMENT");
+//
+// ID = glCreateProgram();
+//
+// glAttachShader(ID, vertexShader);
+// glAttachShader(ID, fragmentShader);
+//
+// glLinkProgram(ID);
+// compileErrors(ID, "PROGRAM");
+//
+// glDeleteShader(vertexShader);
+// glDeleteShader(fragmentShader);
+// }
+
 // Activates the Shader Program
 void Shader::Activate() { glUseProgram(ID); }
 

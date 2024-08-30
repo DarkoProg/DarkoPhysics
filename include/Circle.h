@@ -1,4 +1,4 @@
-#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 #include "Object.h"
 
@@ -9,6 +9,7 @@ class Circle : public Object {
   float radius;
 
  public:
-  Circle(glm::vec2 Tposition, float Tinverse_mass, float Tradius);
+  Circle(glm::vec3 Tposition, float Tinverse_mass, float Tradius);
   float getRadius();
+  std::vector<GLfloat> generateVertecies() override;
 };

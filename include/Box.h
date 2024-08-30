@@ -1,5 +1,5 @@
 #include <glm/ext/vector_float2.hpp>
-#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 #include "Object.h"
 
@@ -7,12 +7,14 @@
 
 class Box : public Object {
  private:
-  glm::vec2 min;
-  glm::vec2 max;
+  glm::vec3 min;
+  glm::vec3 max;
 
  public:
-  Box(glm::vec2 Tposition, float Tinverse_mass, glm::vec2 min, glm::vec2 max);
+  Box(glm::vec3 Tposition, float Tinverse_mass, glm::vec3 min, glm::vec3 max);
 
-  glm::vec2 getMin();
-  glm::vec2 getMax();
+  glm::vec3 getMin();
+  glm::vec3 getMax();
+
+  std::vector<GLfloat> generateVertecies() override;
 };

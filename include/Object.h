@@ -1,31 +1,35 @@
 #include <glm/glm.hpp>
 #include <glm/mat4x4.hpp>
-#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <vector>
+
+#include "ShaderProgram.h"
 
 #pragma once
 
 class Object {
  private:
-  glm::vec2 position;
+  glm::vec3 position;
   float inverse_mass;
-  glm::vec2 velocity;
+  glm::vec3 velocity;
   glm::mat4 orientation;
 
  public:
-  Object(glm::vec2 Tposition, float Tinverse_mass);
+  Object(glm::vec3 Tposition, float Tinverse_mass);
 
   // getters
   float getInverseMass();
-  glm::vec2 getVelocity();
-  glm::vec2 getPosition();
+  glm::vec3 getVelocity();
+  glm::vec3 getPosition();
 
   // setters
   void setInverseMass(float Tinverse_mass);
-  void setVelocity(glm::vec2 Tvelocity);
-  void setPosition(glm::vec2 Tposition);
+  void setVelocity(glm::vec3 Tvelocity);
+  void setPosition(glm::vec3 Tposition);
 
   // virtual methods
-  void print();
+  virtual void print();
+  virtual std::vector<GLfloat> generateVertecies();
 
   // other methods
   void Move();
