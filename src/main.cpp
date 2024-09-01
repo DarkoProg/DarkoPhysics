@@ -69,17 +69,21 @@ glm::vec3 collisionNormal(Object object1, Object object2) {
 // }
 
 int main() {
-  objects.push_back(new Box(glm::vec3(0.5f, 0.5f, 0), 1.0f / 10.0f,
+  objects.push_back(new Circle(glm::vec3(0.5f, 0.5f, 0), 1.0f / 10.0f, 0.5f));
+  objects.push_back(new Box(glm::vec3(0.0f, 0.0f, 0), 1.0f / 10.0f,
                             glm::vec3(0.5f, 0.5f, 0),
                             glm::vec3(0.5f, 0.5f, 0)));
 
   for (int i = 0; i < objects.size(); i++) {
     std::vector<GLfloat> temp_verticies = objects[i]->generateVertecies();
     for (int i = 0; i < temp_verticies.size(); i++) {
-      std::cout << temp_verticies[i] << std::endl;
+      // std::cout << temp_verticies[i] << std::endl;
     }
     vert.insert(vert.end(), temp_verticies.begin(), temp_verticies.end());
   }
+
+  std::cout << vert.size() << " aaa" << std::endl;
+  std::cout << vert.size() / 3 << " num of vert" << std::endl;
   Graphic opengl(800, 800);
   if (!opengl.initWindow()) {
     return -1;
@@ -106,6 +110,7 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
     ShaderProgram.Activate();
     VAO1.Bind();
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, vert.size() / 3);
     glfwSwapBuffers(opengl.getWindow());
     glfwPollEvents();
